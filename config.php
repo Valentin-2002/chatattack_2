@@ -3,7 +3,7 @@
 const hostname = 'localhost';
 const username = 'root';
 const password = '';
-const dbname = 'demo';
+const dbname = 'm151_chatattack_db';
 
 try{
 

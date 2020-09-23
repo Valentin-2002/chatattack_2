@@ -1,31 +1,45 @@
 <?php
+// Include config file
 require_once "config.php";
  
+// Define variables and initialize with empty values
  
+// Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-        $name = $_POST['name'];
-        $address= $_POST['address'];
-        $salary = $_POST['salary']; 
-        $sql = "INSERT INTO employees (name, address, salary) VALUES ($name, $address, $salary)";
- 
-        if($stmt = $pdo->prepare($sql)){
+    $username = $_POST['username'];
+    $credential = $_POST['credential'];
+    $role = $_POST['role'];
 
-            if($stmt->execute()){
+    $sql = "INSERT INTO user (username, credential, role) VALUES (:username, :credential, :role)";
 
-                header("location: index.php");
-                exit();
-
-            } else{
-
-                echo "Something went wrong. Please try again later.";
-
-            }
+    if($stmt = $pdo->prepare($sql)){
+        // Bind variables to the prepared statement as parameters
+        $stmt->bindParam(":username", $param_username);
+        $stmt->bindParam(":credential", $param_credential);
+        $stmt->bindParam(":role", $param_role);
+        
+        // Set parameters
+        $param_username = $username;
+        $param_credential = $credential;
+        $param_role = $role;
+        
+        // Attempt to execute the prepared statement
+        if($stmt->execute()){
+            // Records created successfully. Redirect to landing page
+            header("location: index.php");
+            exit();
+        } else{
+            echo "Something went wrong. Please try again later.";
         }
-         
-        unset($stmt);
-        unset($pdo);
     }
+     
+    // Close statement
+    unset($stmt);
+    
+    // Close connection
+    unset($pdo);
+}
 ?>
  
 <!DOCTYPE html>
@@ -33,29 +47,45 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Create Record</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <style type="text/css">
+        .wrapper{
+            width: 500px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <div>
-            <h2>Create Record</h2>
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-header">
+                        <h2>Create Record</h2>
+                    </div>
+                    <p>Please fill this form and submit to add User record to the database.</p>
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" name="username" class="form-control">
+                        </div>
+                        <div class="form-group>">
+                            <label>Credential</label>
+                            <input type="password" name="credential" class="form-control"></input>
+                        </div>
+                        <div class="form-group">
+                        <label for="cars">Role</label>
+                        <select name="role">
+                        <option value="1">Administrator</option>
+                        <option value="0">Default</option>
+                        </select>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                        <a href="index.php" class="btn btn-default">Cancel</a>
+                    </form>
+                </div>
+            </div>        
         </div>
-        <p>Please fill this form and submit to add employee record to the database.</p>
-        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-            <div>
-                <label>Name</label>
-                <input type="text" name="name" value="<?php echo $name; ?>">
-            </div>
-            <div>
-                <label>Address</label>
-                <textarea name="address"><?php echo $address; ?></textarea>
-            </div>
-            <div>
-                <label>Salary</label>
-                <input type="text" name="salary" value="<?php echo $salary; ?>">
-            </div>
-            <input type="submit" value="Submit">
-            <a href="index.php">Cancel</a>
-        </form>
     </div>
 </body>
 </html>
