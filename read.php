@@ -1,15 +1,16 @@
 <?php
-if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
+if(isset($_GET["id"])){
+
     require_once "config.php";
     
-    $sql = "SELECT * FROM employees WHERE id = :id";
+    $id = $_GET['id'];
+
+    $sql = "SELECT * FROM employees WHERE id = $id";
     
-    if($stmt = $pdo->prepare($sql)){
-        $stmt->bindParam(":id", $param_id);
-        
-        $param_id = trim($_GET["id"]);
+    if($stmt = $pdo->prepare($sql)) {
         
         if($stmt->execute()){
+
             if($stmt->rowCount() == 1){
 
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -17,23 +18,32 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 $name = $row["name"];
                 $address = $row["address"];
                 $salary = $row["salary"];
+
             } else{
+
                 header("location: error.php");
                 exit();
+
             }
             
         } else{
+
             echo "Oops! Something went wrong. Please try again later.";
+
         }
     }
      
     unset($stmt);
     
     unset($pdo);
+
 } else{
+
     header("location: error.php");
     exit();
+
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,17 +58,17 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         </div>
         <div>
             <label>Name</label>
-            <p class="form-control-static"><?php echo $row["name"]; ?></p>
+            <p><?php echo $row["name"]; ?></p>
         </div>
         <div>
             <label>Address</label>
-            <p class="form-control-static"><?php echo $row["address"]; ?></p>
+            <p><?php echo $row["address"]; ?></p>
         </div>
         <div>
             <label>Salary</label>
-            <p class="form-control-static"><?php echo $row["salary"]; ?></p>
+            <p><?php echo $row["salary"]; ?></p>
         </div>
-        <p><a href="index.php" class="btn btn-primary">Back</a></p>
+        <p><a href="index.php">Back</a></p>
     </div>
 </body>
 </html>

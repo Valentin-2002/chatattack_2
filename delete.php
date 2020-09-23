@@ -1,29 +1,40 @@
 <?php
-if(isset($_POST["id"]) && !empty($_POST["id"])){
+if(isset($_POST["id"])){
+
     require_once "config.php";
     
-    $sql = "DELETE FROM employees WHERE id = ?";
+    $sql = "DELETE FROM employees WHERE id = :id";
     
-    if($stmt = mysqli_prepare($link, $sql)){
-        mysqli_stmt_bind_param($stmt, "i", $param_id);
+    if($stmt = $pdo->prepare($sql)){
+
+        $stmt->bindParam(":id", $param_id);
         
         $param_id = trim($_POST["id"]);
         
-        if(mysqli_stmt_execute($stmt)){
+        if($stmt->execute()){
+
             header("location: index.php");
             exit();
+
         } else{
+
             echo "Oops! Something went wrong. Please try again later.";
+
         }
+
     }
      
-    mysqli_stmt_close($stmt);
+    unset($stmt);
     
-    mysqli_close($link);
+    unset($pdo);
+
 } else{
+
     if(empty(trim($_GET["id"]))){
+
         header("location: error.php");
         exit();
+
     }
 }
 ?>
@@ -43,8 +54,8 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                 <input type="hidden" name="id" value="<?php echo trim($_GET["id"]); ?>"/>
                 <p>Are you sure you want to delete this record?</p><br>
                 <p>
-                    <input type="submit" value="Yes" class="btn btn-danger">
-                    <a href="index.php" class="btn btn-default">No</a>
+                    <input type="submit" value="Yes">
+                    <a href="index.php">No</a>
                 </p>
             </div>
         </form>
