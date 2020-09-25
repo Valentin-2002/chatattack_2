@@ -1,8 +1,9 @@
 <?php
 require_once "db-connection.php";
- 
+
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     $id = $_POST["id"];
+    echo('ID: ' . $id);
     $username = $_POST['username'];
     $credential = $_POST['credential'];
     $role = $_POST['role'];
@@ -10,10 +11,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     $sql = "UPDATE user SET username=:username, credential=:credential, role=:role WHERE id=:id";
 
     if($stmt = $pdo->prepare($sql)){
+        $stmt->bindParam(":id", $param_id);
         $stmt->bindParam(":username", $param_username);
         $stmt->bindParam(":credential", $param_credential);
         $stmt->bindParam(":role", $param_role);
         
+        $param_id = $id;
         $param_username = $username;
         $param_credential = $credential;
         $param_role = $role;
@@ -32,7 +35,6 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 } else{
     if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         $id =  trim($_GET["id"]);
-        
         $sql = "SELECT * FROM user WHERE id = :id";
         if($stmt = $pdo->prepare($sql)){
             $stmt->bindParam(":id", $param_id);
@@ -87,6 +89,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     </div>
                     <p>Please fill this form and submit to add User record to the database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <input hidden name="id" value="<?= $id ?>"></input>
                         <div class="form-group">
                             <label>Username</label>
                             <input type="text" name="username" class="form-control" value="<?= $username ?>">
