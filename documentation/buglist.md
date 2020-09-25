@@ -1,4 +1,4 @@
-### Buglist
+# Buglist
 
 ## Frontend
 
@@ -19,7 +19,7 @@
 - [ ] Log Table Join
 - [ ] Delete User Foreign Key Error
 
-# Misc
+### Misc
 
 - [ ] Remove unused Code
 - [ ] Clean Syntax
