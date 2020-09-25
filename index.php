@@ -31,13 +31,11 @@
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">User Details</h2>
-                        <a href="create.php" class="btn btn-success pull-right">Add New User</a>
+                        <a href="create-user.php" class="btn btn-success pull-right">Add New User</a>
                     </div>
                     <?php
-                    // Include config file
-                    require_once "config.php";
+                    require_once "db-connection.php";
                     
-                    // Attempt select query execution
                     $sql = "SELECT * FROM user";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
@@ -59,14 +57,13 @@
                                         echo "<td>" . $row['credential'] . "</td>";
                                         echo "<td>" . $row['role'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='edit-user.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='delete-user.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
                             echo "</table>";
-                            // Free result set
                             unset($result);
                         } else{
                             echo "<p class='lead'><em>No records were found.</em></p>";
@@ -75,7 +72,6 @@
                         echo "ERROR: Could not able to execute $sql. " . $mysqli->error;
                     }
                     
-                    // Close connection
                     unset($pdo);
                     ?>
                 </div>

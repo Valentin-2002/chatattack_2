@@ -1,10 +1,6 @@
 <?php
-// Include config file
-require_once "config.php";
+require_once "db-connection.php";
  
-// Define variables and initialize with empty values
- 
-// Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $username = $_POST['username'];
@@ -14,19 +10,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $sql = "INSERT INTO user (username, credential, role) VALUES (:username, :credential, :role)";
 
     if($stmt = $pdo->prepare($sql)){
-        // Bind variables to the prepared statement as parameters
         $stmt->bindParam(":username", $param_username);
         $stmt->bindParam(":credential", $param_credential);
         $stmt->bindParam(":role", $param_role);
         
-        // Set parameters
         $param_username = $username;
         $param_credential = $credential;
         $param_role = $role;
         
-        // Attempt to execute the prepared statement
         if($stmt->execute()){
-            // Records created successfully. Redirect to landing page
             header("location: index.php");
             exit();
         } else{
@@ -34,10 +26,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
      
-    // Close statement
     unset($stmt);
     
-    // Close connection
     unset($pdo);
 }
 ?>

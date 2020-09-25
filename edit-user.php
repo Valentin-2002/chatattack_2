@@ -1,34 +1,24 @@
 <?php
-// Include config file
-require_once "config.php";
+require_once "db-connection.php";
  
-
- 
-// Processing form data when form is submitted
 if(isset($_POST["id"]) && !empty($_POST["id"])){
-    // Get hidden input value
     $id = $_POST["id"];
     $username = $_POST['username'];
     $credential = $_POST['credential'];
     $role = $_POST['role'];
     
-    // Prepare an update statement
     $sql = "UPDATE user SET username=:username, credential=:credential, role=:role WHERE id=:id";
 
     if($stmt = $pdo->prepare($sql)){
-        // Bind variables to the prepared statement as parameters
         $stmt->bindParam(":username", $param_username);
         $stmt->bindParam(":credential", $param_credential);
         $stmt->bindParam(":role", $param_role);
         
-        // Set parameters
         $param_username = $username;
         $param_credential = $credential;
         $param_role = $role;
         
-        // Attempt to execute the prepared statement
         if($stmt->execute()){
-            // Records created successfully. Redirect to landing page
             header("location: index.php");
             exit();
         } else{
@@ -36,39 +26,27 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         }
     }
         
-    // Close statement
     unset($stmt);
     
-    // Close connection
     unset($pdo);
 } else{
-    // Check existence of id parameter before processing further
     if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
-        // Get URL parameter
         $id =  trim($_GET["id"]);
         
-        // Prepare a select statement
         $sql = "SELECT * FROM user WHERE id = :id";
         if($stmt = $pdo->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
             $stmt->bindParam(":id", $param_id);
             
-            // Set parameters
             $param_id = $id;
             
-            // Attempt to execute the prepared statement
             if($stmt->execute()){
                 if($stmt->rowCount() == 1){
-                    /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     
-                    // Retrieve individual field value
                     $username = $row["username"];
                     $credential = $row["credential"];
                     $role = $row["role"];
                 } else{
-                    // URL doesn't contain valid id. Redirect to error page
-                    header("location: error1.php");
                     exit();
                 }
                 
@@ -77,14 +55,10 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             }
         }
         
-        // Close statement
         unset($stmt);
         
-        // Close connection
         unset($pdo);
     }  else{
-        // URL doesn't contain id parameter. Redirect to error page
-        header("location: error2.php");
         exit();
     }
 }
