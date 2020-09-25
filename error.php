@@ -9,7 +9,7 @@
         <h1>Invalid Request</h1>
     </div>
     <div>
-        <p>Sorry, you've made an invalid request. Please <a href="index.php">go back</a> and try again.</p>
+        <p>Sorry, you've made an invalid request. Please <a href="admin-menu.php">go back</a> and try again.</p>
     </div>
 </body>
 </html>

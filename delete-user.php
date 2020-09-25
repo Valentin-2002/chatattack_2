@@ -1,4 +1,14 @@
 <?php
+
+session_start();
+if(isset($_SESSION['role'])) {
+	if($_SESSION['role'] == 1) {
+		readfile("adminnavigation.html");
+	} else {
+		readfile("defaultnavigation.html");
+	}
+}
+
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     require_once "db-connection.php";
     
@@ -10,7 +20,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $param_id = trim($_POST["id"]);
         
         if($stmt->execute()){
-            header("location: index.php");
+            header("location: admin-menu.php");
             exit();
         } else{
             echo "Oops! Something went wrong. Please try again later.";
@@ -54,7 +64,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                             <p>Are you sure you want to delete this record?</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="index.php" class="btn btn-default">No</a>
+                                <a href="admin-menu.php" class="btn btn-default">No</a>
                             </p>
                         </div>
                     </form>

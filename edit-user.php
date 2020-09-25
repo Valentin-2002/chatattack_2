@@ -1,6 +1,15 @@
 <?php
 require_once "db-connection.php";
 
+session_start();
+if(isset($_SESSION['role'])) {
+	if($_SESSION['role'] == 1) {
+		readfile("adminnavigation.html");
+	} else {
+		readfile("defaultnavigation.html");
+	}
+}
+
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     $id = $_POST["id"];
     echo('ID: ' . $id);
@@ -22,7 +31,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $param_role = $role;
         
         if($stmt->execute()){
-            header("location: index.php");
+            header("location: admin-menu.php");
             exit();
         } else{
             echo "Something went wrong. Please try again later.";
@@ -106,7 +115,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         </select>
                         </div>
                         <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="index.php" class="btn btn-default">Cancel</a>
+                        <a href="admin-menu.php" class="btn btn-default">Cancel</a>
                     </form>
                 </div>
             </div>        

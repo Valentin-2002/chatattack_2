@@ -25,8 +25,8 @@
     </script>
 </head>
 <body>
-    <header>
-        <?php
+    <header>    
+        <?php 
             session_start();
             if(isset($_SESSION['role'])) {
                 if($_SESSION['role'] == 1) {
@@ -34,39 +34,44 @@
                 } else {
                     readfile("defaultnavigation.html");
                 }
-            } 
+            }
         ?>
     </header>
-    <h1>Chat Log Table</h1>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
+                        <h2 class="pull-left">User Details</h2>
+                        <a href="create-user.php" class="btn btn-success pull-right">Add New User</a>
+                    </div>
                     <?php
                     require_once "db-connection.php";
                     
-                    $sql = "SELECT * FROM log";
+                    $sql = "SELECT * FROM user";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>ID</th>";
-                                        echo "<th>Time</th>";
-                                        echo "<th>From</th>";
-                                        echo "<th>To</th>";
-                                        echo "<th>Message</th>";
+                                        echo "<th>#</th>";
+                                        echo "<th>Username</th>";
+                                        echo "<th>Credential</th>";
+                                        echo "<th>Role</th>";
+                                        echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = $result->fetch()){
                                     echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['time'] . "</td>";
-                                        echo "<td>" . $row['from_user'] . "</td>";
-                                        echo "<td>" . $row['to_user'] . "</td>";
-                                        echo "<td>" . $row['msg'] . "</td>";
+                                        echo "<td>" . $row['username'] . "</td>";
+                                        echo "<td>" . $row['credential'] . "</td>";
+                                        echo "<td>" . ($row['role'] == 1 ? 'Admin' : 'Default') . "</td>";
+                                        echo "<td>";
+                                            echo "<a href='edit-user.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='delete-user.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                        echo "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
