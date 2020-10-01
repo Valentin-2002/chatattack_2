@@ -14,7 +14,7 @@
 ## Backend
 
 - [x] Group Chat Functionality
-- [ ] Session Check in every php file
+- [x] Session Check in every php file
 - [ ] Delete Message
 - [ ] Log Table Join
 - [ ] Delete User Foreign Key Error
