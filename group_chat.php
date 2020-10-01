@@ -10,14 +10,15 @@ if($_POST["action"] == "insert_data")
 {
 	$data = array(
 		':from_user'		=>	$_SESSION["id"],
+		'to_user'			=> '0',
 		':msg'		=>	$_POST['chat_message'],
 		':status'			=>	'1'
 	);
 
 	$query = "
 	INSERT INTO log
-	(from_user, msg, status) 
-	VALUES (:from_user, :msg, :status)
+	(from_user, to_user, msg, status) 
+	VALUES (:from_user, :to_user, :msg, :status)
 	";
 
 	$statement = $pdo->prepare($query);
