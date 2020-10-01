@@ -5,16 +5,16 @@ include('db-connection.php');
 session_start();
 
 $data = array(
-	':to_user'		=>	$_POST['to_user_id'],
-	':from_user'		=>	$_SESSION['id'],
+	':from_user'		=>	$_SESSION["id"],
+	'to_user'			=> $_POST['to_user_id'],
 	':msg'		=>	$_POST['chat_message'],
 	':status'			=>	'1'
 );
 
 $query = "
-INSERT INTO log 
-(to_user, from_user, msg, status) 
-VALUES (:to_user, :from_user, :msg, :status)
+INSERT INTO chat
+(from_user, to_user, msg, status) 
+VALUES (:from_user, :to_user, :msg, :status)
 ";
 
 $statement = $pdo->prepare($query);

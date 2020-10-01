@@ -16,7 +16,7 @@ if(isset($_POST["register"]))
 	$username = trim($_POST["username"]);
 	$password = trim($_POST['credential']);
 	$check_query = "
-	SELECT * FROM login 
+	SELECT * FROM user 
 	WHERE username = :username
 	";
 	$statement = $pdo->prepare($check_query);
@@ -54,7 +54,7 @@ if(isset($_POST["register"]))
 				);
 
 				$query = "
-				INSERT INTO login 
+				INSERT INTO user 
 				(username, password) 
 				VALUES (:username, :password)
 				";

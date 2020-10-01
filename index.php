@@ -37,7 +37,7 @@ if(isset($_SESSION['role'])) {
         <div class="container">
 			<br />
 			
-			<h3 align="center">ChatAttack</h3><br />
+			<h1 align="center">Hi <?= $_SESSION['username'] ?>, Welcome back to ChatAttack!</h1><br />
 			<br />
 			<div class="row">
 				<div class="col-md-8 col-sm-6">
@@ -46,9 +46,6 @@ if(isset($_SESSION['role'])) {
 				<div class="col-md-2 col-sm-3">
 					<input type="hidden" id="is_active_group_chat_window" value="no" />
 					<button type="button" name="group_chat" id="group_chat" class="btn btn-warning btn-xs">Group Chat</button>
-				</div>
-				<div class="col-md-2 col-sm-3">
-					<p align="right">Hi - <?php echo $_SESSION['username']; ?> - <a href="logout.php">Logout</a></p>
 				</div>
 			</div>
 			<div class="table-responsive">

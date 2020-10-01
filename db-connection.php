@@ -36,7 +36,7 @@ function fetch_user_last_activity($user_id, $pdo)
 function fetch_user_chat_history($from_user_id, $to_user_id, $pdo)
 {
 	$query = "
-	SELECT * FROM log
+	SELECT * FROM chat
 	WHERE (from_user = '".$from_user_id."' 
 	AND to_user = '".$to_user_id."') 
 	OR (from_user = '".$to_user_id."' 
@@ -93,7 +93,7 @@ function fetch_user_chat_history($from_user_id, $to_user_id, $pdo)
 	}
 	$output .= '</ul>';
 	$query = "
-	UPDATE log
+	UPDATE chat
 	SET status = '0' 
 	WHERE from_user = '".$to_user_id."' 
 	AND to_user = '".$from_user_id."' 
@@ -160,7 +160,7 @@ function fetch_is_type_status($user_id, $pdo)
 function fetch_group_chat_history($pdo)
 {
 	$query = "
-	SELECT * FROM log
+	SELECT * FROM chat
 	WHERE to_user = '0'  
 	ORDER BY time DESC
 	";

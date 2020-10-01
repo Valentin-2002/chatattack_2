@@ -16,7 +16,7 @@ if($_POST["action"] == "insert_data")
 	);
 
 	$query = "
-	INSERT INTO log
+	INSERT INTO chat
 	(from_user, to_user, msg, status) 
 	VALUES (:from_user, :to_user, :msg, :status)
 	";

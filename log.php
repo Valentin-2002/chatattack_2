@@ -52,7 +52,7 @@
                     <?php
                     require_once "db-connection.php";
                     
-                    $sql = "SELECT * FROM log";
+                    $sql = "SELECT * FROM chat";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
                             echo "<table class='table table-bordered table-striped'>";
