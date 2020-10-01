@@ -28,6 +28,10 @@
     <header>    
         <?php 
             session_start();
+            if(!isset($_SESSION['id']))
+            {
+                header("location:login.php");
+            }
             if(isset($_SESSION['role'])) {
                 if($_SESSION['role'] == 1) {
                     readfile("adminnavigation.html");
