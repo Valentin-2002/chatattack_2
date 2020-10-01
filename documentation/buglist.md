@@ -15,7 +15,7 @@
 
 - [x] Group Chat Functionality
 - [x] Session Check in every php file
-- [ ] Delete Message
+- [x] Delete Message
 - [ ] Log Table Join
 - [ ] Delete User Foreign Key Error
 

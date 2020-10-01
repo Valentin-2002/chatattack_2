@@ -2,17 +2,18 @@
 
 include('db-connection.php');
 
-if(isset($_POST["chat_message_id"]))
+if(isset($_POST["id"]))
 {
 	$query = "
-	UPDATE chat_message 
+	UPDATE log
 	SET status = '2' 
-	WHERE chat_message_id = '".$_POST["chat_message_id"]."'
+	WHERE id = '".$_POST["id"]."'
 	";
 
 	$statement = $pdo->prepare($query);
 
 	$statement->execute();
+
 }
 
 ?>

@@ -323,19 +323,16 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '.remove_chat', function(){
-		var chat_message_id = $(this).attr('id');
-		if(confirm("Are you sure you want to remove this chat?"))
-		{
-			$.ajax({
-				url:"remove_chat.php",
-				method:"POST",
-				data:{chat_message_id:chat_message_id},
-				success:function(data)
-				{
-					update_chat_history_data();
-				}
-			})
-		}
+		var id = $(this).attr('id');
+		$.ajax({
+			url:"remove_chat.php",
+			method:"POST",
+			data:{id:id},
+			success:function(data)
+			{
+				update_chat_history_data();
+			}
+		})
 	});
 	
 });  
