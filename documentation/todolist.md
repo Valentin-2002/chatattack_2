@@ -1,6 +1,6 @@
 # Buglist
 
-## Frontend
+## New Frontend
 
 - [ ] Make Chats non - modal
 - [ ] Chat Message Listing
@@ -11,17 +11,22 @@
 - [ ] Log Table styling
 - [ ] Login + Registration re - styling
 
-## Backend
+## Backend Fixes
 
 - [x] Group Chat Functionality
 - [x] Session Check in every php file
 - [x] Delete Message
 - [ ] Log Table Join
-- [ ] Delete User Foreign Key Error
+- [x] Delete User Foreign Key Error
+- [ ] Re - Structure Chat table and create separate Log Table
 
 ### Misc
 
-- [ ] Remove unused Code
+- [ ] Remove old unused Code
 - [ ] Clean Syntax
 - [ ] Comment Code
 - [ ] General Code Improvement
+
+## New Features
+
+- [ ] Add Friend System
