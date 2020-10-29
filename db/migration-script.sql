@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.6
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Erstellungszeit: 02. Okt 2020 um 15:36
--- Server-Version: 10.4.14-MariaDB
--- PHP-Version: 7.4.10
+-- Host: mysql27j16.db.hostpoint.internal
+-- Erstellungszeit: 29. Okt 2020 um 15:40
+-- Server-Version: 10.3.25-MariaDB-log
+-- PHP-Version: 7.2.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Datenbank: `m151_chatattack_db`
+-- Datenbank: `xucatoni_chatattack`
 --
 
 -- --------------------------------------------------------
@@ -41,18 +42,68 @@ CREATE TABLE `chat` (
 --
 
 INSERT INTO `chat` (`id`, `time`, `from_user`, `to_user`, `msg`, `status`) VALUES
-(2, '2020-10-01 14:55:25', 7, 2, 'sdsdsd', 1),
-(3, '2020-10-01 14:55:27', 7, 2, 'sds', 1),
-(4, '2020-10-01 14:55:30', 7, 2, 'sdsdsd', 1),
-(5, '2020-10-01 14:55:41', 7, 5, 'dfdf', 1),
-(6, '2020-10-01 14:55:58', 5, 6, 'dasdas', 1),
-(7, '2020-10-01 14:56:22', 5, 4, 'gg', 0),
-(8, '2020-10-01 15:02:16', 4, 5, 'log', 2),
-(9, '2020-10-01 15:02:07', 4, 0, 'dsds', 2),
-(10, '2020-10-01 15:06:00', 4, 2, 'test', 0),
-(11, '2020-10-01 15:06:05', 2, 4, 'test', 1),
-(12, '2020-10-01 15:06:12', 2, 4, 'test1', 2),
-(13, '2020-10-01 15:06:17', 2, 0, 'test', 1);
+(54, '2020-10-15 08:53:06', 2, 7, 'hi', 1),
+(55, '2020-10-15 08:55:57', 2, 0, 'dasd', 1),
+(56, '2020-10-15 09:01:58', 5, 0, 'hi', 1),
+(57, '2020-10-15 09:16:00', 2, 5, 'dsd', 1),
+(58, '2020-10-15 09:16:10', 2, 5, 'sad', 1);
+
+--
+-- Trigger `chat`
+--
+DELIMITER $$
+CREATE TRIGGER `trigger_chat_log` AFTER INSERT ON `chat` FOR EACH ROW INSERT INTO `log` (`time`, `from_user_name`, `to_user_name`, `msg`) 
+SELECT * FROM
+   (SELECT chat.time as time
+FROM chat
+ORDER BY chat.time DESC 
+LIMIT 1) as time_select
+,
+    (SELECT user.username AS from_user
+FROM chat 
+INNER JOIN user 
+ON chat.from_user=user.id 
+ORDER BY chat.time DESC 
+LIMIT 1) as from_user_select
+    ,
+    (SELECT user.username as to_user
+FROM chat 
+INNER JOIN user 
+ON chat.to_user=user.id 
+ORDER BY chat.time DESC 
+LIMIT 1) as to_user_select
+	,
+   (SELECT chat.msg as msg
+FROM chat
+ORDER BY chat.time DESC 
+LIMIT 1) as msg_select
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `log`
+--
+
+CREATE TABLE `log` (
+  `id` int(11) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `from_user_name` varchar(63) COLLATE utf8mb4_bin NOT NULL,
+  `to_user_name` varchar(63) COLLATE utf8mb4_bin NOT NULL,
+  `msg` varchar(1023) COLLATE utf8mb4_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- Daten für Tabelle `log`
+--
+
+INSERT INTO `log` (`id`, `time`, `from_user_name`, `to_user_name`, `msg`) VALUES
+(12, '2020-10-15 08:53:06', 'testuser', 'group', 'hi'),
+(13, '2020-10-15 08:55:57', 'testuser', 'group', 'dasd'),
+(14, '2020-10-15 09:01:58', 'vwetts@gmail.com', 'group', 'hi'),
+(15, '2020-10-15 09:16:00', 'testuser', 'vwetts@gmail.com', 'dsd'),
+(16, '2020-10-15 09:16:10', 'testuser', 'vwetts@gmail.com', 'sad');
 
 -- --------------------------------------------------------
 
@@ -73,9 +124,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `credential`, `role`, `last_activity`) VALUES
-(2, 'testuser', 'x', 1, '2020-10-02 07:00:15'),
-(5, 'vwetts@gmail.com', 'x', 1, '2020-10-01 14:56:12'),
-(7, 'group', 'x', 1, '2020-10-01 15:01:24');
+(0, 'group', 'x', 1, '2020-10-15 08:55:45'),
+(2, 'testuser', 'x', 1, '2020-10-19 06:55:42'),
+(5, 'vwetts@gmail.com', 'x', 1, '2020-10-29 10:31:19'),
+(8, 'testuser02', 'x', 0, '2020-10-15 09:06:01');
 
 --
 -- Indizes der exportierten Tabellen
@@ -85,6 +137,12 @@ INSERT INTO `user` (`id`, `username`, `credential`, `role`, `last_activity`) VAL
 -- Indizes für die Tabelle `chat`
 --
 ALTER TABLE `chat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `log`
+--
+ALTER TABLE `log`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -101,13 +159,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT für Tabelle `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+
+--
+-- AUTO_INCREMENT für Tabelle `log`
+--
+ALTER TABLE `log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
